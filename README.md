@@ -3,8 +3,14 @@ Designed and executed a comprehensive multi-module analytics suite simulating re
 Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools
 
 
-Project Name: Enterprise Data Analytics & Strategic Reporting Suite Skills Used: Financial Modeling, Pivot Tables, Pareto Analysis, Customer Segmentation, Dashboarding.
-Project Description (Copy & Paste): Designed and executed a comprehensive multi-module analytics suite simulating real-world business scenarios across Retail, Travel, and Financial sectors. Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools.
+Project Name: Enterprise Data Analytics & Strategic Reporting Suite Skills Used: Financial Modeling, Pivot Tables, Pareto Analysis, Customer Segmentation, Dashboarding.\
+
+
+Project Description : Designed and executed a comprehensive multi-module analytics suite simulating real-world business scenarios across Retail, Travel, and Financial sectors. Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools.
+
+
+
+
 Key Modules & Insights:
 •	Sales Performance Modeling: Engineered a dynamic reporting system for a multi-regional retailer ("Holt Dept Stores"), utilizing Pivot Tables to track product group performance and identify seasonal revenue trends across 5 geographic regions.
 •	Customer Segmentation Strategy: Conducted demographic clustering on travel spending data. Discovered key insights indicating that the 25-34 age cohort outspends other groups by ~15%, enabling targeted marketing strategies.
