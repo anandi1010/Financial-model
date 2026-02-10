@@ -1,5 +1,8 @@
 Financial-model
-Designed and executed a comprehensive multi-module analytics suite simulating real-world business scenarios across Retail, Travel, and Financial sectors. Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools
+Designed and executed a comprehensive multi-module analytics suite simulating real-world business scenarios across Retail, Travel, and Financial sectors. 
+Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools
+
+
 Project Name: Enterprise Data Analytics & Strategic Reporting Suite Skills Used: Financial Modeling, Pivot Tables, Pareto Analysis, Customer Segmentation, Dashboarding.
 Project Description (Copy & Paste): Designed and executed a comprehensive multi-module analytics suite simulating real-world business scenarios across Retail, Travel, and Financial sectors. Leveraged Advanced Excel functions to transform raw datasets into strategic decision-making tools.
 Key Modules & Insights:
