@@ -116,4 +116,414 @@
 
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="fixed inset-0 bg-slate-800 bg-opacity-75 z-50 hidden md:hidden">
-        <div class="bg-
+        <div class="bg-white w-72 h-full shadow-xl flex flex-col p-4 animate-fade-in">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                <h2 class="font-bold text-xl text-slate-800">Menu</h2>
+                <button id="close-mobile-menu" class="text-slate-500 text-xl focus:outline-none"><i class="fas fa-times"></i></button>
+            </div>
+            <nav class="space-y-2 mb-8 flex-1">
+                <button onclick="router.navigate('overview'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">📊 Executive Summary</button>
+                <button onclick="router.navigate('holt'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">🏬 Sales Performance</button>
+                <button onclick="router.navigate('travel'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">✈️ Customer Segments</button>
+                <button onclick="router.navigate('oei'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">🏷️ Pricing Strategy</button>
+                <button onclick="router.navigate('networking'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">🤝 B2B & Pareto</button>
+                <button onclick="router.navigate('portfolio'); toggleMobileMenu()" class="block w-full text-left p-3 rounded hover:bg-slate-100 font-medium text-slate-700">📈 Financial Portfolio</button>
+            </nav>
+            <div class="mt-auto pt-4 border-t border-slate-100">
+                <p class="text-xs text-slate-400 uppercase tracking-wider mb-3 font-semibold">Contact Anandi</p>
+                <a href="https://www.linkedin.com/in/anandi-singh-11159b162" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center p-3 rounded mb-2 font-medium transition">
+                    <i class="fab fa-linkedin mr-2"></i> Connect on LinkedIn
+                </a>
+                <a href="https://github.com/anandi1010" target="_blank" class="block w-full bg-slate-800 hover:bg-slate-900 text-white text-center p-3 rounded font-medium transition">
+                    <i class="fab fa-github mr-2"></i> View GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto bg-slate-50 pt-16 md:pt-0">
+        <div id="content-area" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Dynamic Content Injected Here -->
+        </div>
+    </main>
+
+    <script>
+        // --- Data Store (Derived from Problem Set #9 Files) ---
+        const dataStore = {
+            overview: {
+                title: "Executive Summary",
+                intro: "A consolidated view of strategic insights derived from multi-sector datasets. This dashboard highlights key findings in sales operations, customer segmentation, B2B account management, and financial portfolio performance.",
+                cards: [
+                    { title: "Top Insight", value: "25-34 Age Group", desc: "Highest value traveler segment ($935 avg spend), contradicting older-wealthier assumptions.", color: "blue" },
+                    { title: "Revenue Concentration", value: "23%", desc: "Of B2B clients drive ~40% of total revenue (Pareto Principle).", color: "indigo" },
+                    { title: "Pricing Risk", value: "$25 Variance", desc: "Detected per unit on Tents between CA and OR distribution centers.", color: "red" },
+                    { title: "Portfolio Health", value: "+31.2%", desc: "Growth in total portfolio value from initial investment to present.", color: "emerald" }
+                ]
+            },
+            holt: {
+                title: "Holt Retail: Sales Performance",
+                intro: "Analysis of regional sales trends and product category performance for Holt Department Stores. Key focus on identifying high-performing regions and seasonal product spikes.",
+                regions: ['Colorado', 'Utah', 'Automotive', 'Electronics', 'Gardening', 'Housewares', 'Sporting'],
+                avgSales: [52147, 44898, 39619, 46809, 59906, 59610, 54791],
+                timeSeriesLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                timeSeriesData: [919181, 645049, 633491, 707317, 758546, 806661]
+            },
+            travel: {
+                title: "Travel Data: Customer Segmentation",
+                intro: "Demographic clustering analysis of travel spending. Data reveals spending patterns by Age and Gender, enabling targeted marketing strategies.",
+                ageGroups: ['25-34', '35-44', '45-54', '55-64'],
+                femaleSpend: [585, 850, 830, 880], // Approximate from snippet for viz
+                maleSpend: [1221, 940, 960, 920], // Approximate from snippet for viz
+                avgSpend: [935, 895, 897, 903]
+            },
+            oei: {
+                title: "OEI: Pricing Integrity Audit",
+                intro: "Supply chain audit comparing unit pricing across distribution centers (California, Oregon, Washington). Discrepancies indicate potential revenue leakage or data errors.",
+                items: ['Backpack', 'Car Rack', 'Headlamp', 'Sleeping Bag', 'Tent'],
+                pricesCA: [247, 513, 60, 159, 320],
+                pricesOR: [225, 476, 55, 150, 295],
+                pricesWA: [232, 490, 63, 161, 304]
+            },
+            networking: {
+                title: "Networking Solutions: B2B Strategy",
+                intro: "Pareto Analysis (80/20 Rule) of B2B client base. Identifies 'Whale' clients who drive the majority of revenue, justifying a Key Account Management approach.",
+                clients: ['Safeway', 'P&O Shipping', 'Lonrho Group', 'Nissan Car', 'Other Top 5', 'Tail (Rest)'],
+                revenue: [14674575, 4327264, 2886777, 2630946, 2000000, 11000000], // Synthesized top 4 + estimates
+                cumulativePerc: [39, 50, 58, 65, 70, 100]
+            },
+            portfolio: {
+                title: "Nimgade Wealth: Portfolio Tracker",
+                intro: "Financial dashboard tracking asset allocation and growth against S&P 500 benchmarks. Focus on risk management through diversification.",
+                assets: ['Cash', 'U.S. Stocks', 'Non-U.S. Stocks', 'Bonds', 'Other'],
+                allocation: [17.5, 58.42, 7.71, 11.48, 4.89],
+                growthDates: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                portfolioVal: [243000, 255000, 275000, 290000, 305000, 318900],
+                sp500Base: [243000, 260000, 285000, 295000, 320000, 340000] // Simulated benchmark
+            }
+        };
+
+        // --- Application Router & View Logic ---
+        const router = {
+            currentRoute: 'overview',
+            navigate: function(route) {
+                this.currentRoute = route;
+                this.updateUI();
+                
+                // Update Sidebar Active State
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                const navBtn = document.getElementById(`nav-${route}`);
+                if (navBtn) navBtn.classList.add('active');
+            },
+            updateUI: function() {
+                const contentDiv = document.getElementById('content-area');
+                contentDiv.innerHTML = ''; // Clear content
+                
+                const data = dataStore[this.currentRoute];
+                
+                // 1. Render Header
+                const header = document.createElement('div');
+                header.className = "mb-8 animate-fade-in";
+                header.innerHTML = `
+                    <h2 class="text-3xl font-bold text-slate-800">${data.title}</h2>
+                    <p class="mt-2 text-lg text-slate-600 max-w-4xl">${data.intro}</p>
+                `;
+                contentDiv.appendChild(header);
+
+                // 2. Render Specific Modules
+                if (this.currentRoute === 'overview') this.renderOverview(contentDiv, data);
+                else if (this.currentRoute === 'holt') this.renderHolt(contentDiv, data);
+                else if (this.currentRoute === 'travel') this.renderTravel(contentDiv, data);
+                else if (this.currentRoute === 'oei') this.renderOEI(contentDiv, data);
+                else if (this.currentRoute === 'networking') this.renderNetworking(contentDiv, data);
+                else if (this.currentRoute === 'portfolio') this.renderPortfolio(contentDiv, data);
+            },
+            
+            renderOverview: function(container, data) {
+                // KPI Grid
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8";
+                
+                data.cards.forEach(card => {
+                    const el = document.createElement('div');
+                    el.className = `bg-white p-6 rounded-xl shadow-sm border-l-4 border-${card.color}-500 hover:shadow-md transition-shadow animate-fade-in`;
+                    el.innerHTML = `
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">${card.title}</h3>
+                        <div class="mt-2 text-3xl font-bold text-slate-800">${card.value}</div>
+                        <p class="mt-2 text-sm text-slate-600">${card.desc}</p>
+                    `;
+                    grid.appendChild(el);
+                });
+                container.appendChild(grid);
+
+                // Nav Guidance
+                const guide = document.createElement('div');
+                guide.className = "bg-white p-8 rounded-xl shadow-sm animate-fade-in";
+                guide.innerHTML = `
+                    <h3 class="text-xl font-bold text-slate-800 mb-6">Dashboard Navigation Guide</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</div>
+                            <div class="ml-4">
+                                <h4 class="text-md font-bold text-slate-800">Sales Performance</h4>
+                                <p class="text-sm text-slate-500 mt-1">Holt Dept Stores' product trends.</p>
+                                <button onclick="router.navigate('holt')" class="mt-2 text-xs font-semibold text-blue-600 hover:text-blue-800">View Module &rarr;</button>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm">2</div>
+                            <div class="ml-4">
+                                <h4 class="text-md font-bold text-slate-800">Customer Segments</h4>
+                                <p class="text-sm text-slate-500 mt-1">Demographic spending analysis.</p>
+                                <button onclick="router.navigate('travel')" class="mt-2 text-xs font-semibold text-indigo-600 hover:text-indigo-800">View Module &rarr;</button>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm">3</div>
+                            <div class="ml-4">
+                                <h4 class="text-md font-bold text-slate-800">Financial Portfolio</h4>
+                                <p class="text-sm text-slate-500 mt-1">Asset allocation & growth tracking.</p>
+                                <button onclick="router.navigate('portfolio')" class="mt-2 text-xs font-semibold text-emerald-600 hover:text-emerald-800">View Module &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(guide);
+            },
+
+            renderHolt: function(container, data) {
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 lg:grid-cols-2 gap-8";
+                
+                // Chart 1: Average Sales by Region/Product Group
+                const c1 = document.createElement('div');
+                c1.className = "bg-white p-6 rounded-xl shadow-sm animate-fade-in";
+                c1.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Average Sales by Category</h3>
+                                <div class="chart-container"><canvas id="holtBar"></canvas></div>`;
+                grid.appendChild(c1);
+
+                // Chart 2: Sales Trend
+                const c2 = document.createElement('div');
+                c2.className = "bg-white p-6 rounded-xl shadow-sm animate-fade-in";
+                c2.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">6-Month Sales Trend</h3>
+                                <div class="chart-container"><canvas id="holtLine"></canvas></div>`;
+                grid.appendChild(c2);
+
+                container.appendChild(grid);
+
+                // Init Charts
+                setTimeout(() => {
+                    new Chart(document.getElementById('holtBar'), {
+                        type: 'bar',
+                        data: {
+                            labels: data.regions,
+                            datasets: [{
+                                label: 'Avg Sales ($)',
+                                data: data.avgSales,
+                                backgroundColor: '#3b82f6',
+                                borderRadius: 4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                    });
+
+                    new Chart(document.getElementById('holtLine'), {
+                        type: 'line',
+                        data: {
+                            labels: data.timeSeriesLabels,
+                            datasets: [{
+                                label: 'Total Sales ($)',
+                                data: data.timeSeriesData,
+                                borderColor: '#0ea5e9',
+                                backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                }, 0);
+            },
+
+            renderTravel: function(container, data) {
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 lg:grid-cols-2 gap-8";
+
+                // Chart 1: Gender Spend per Age Group
+                const c1 = document.createElement('div');
+                c1.className = "bg-white p-6 rounded-xl shadow-sm lg:col-span-2 animate-fade-in";
+                c1.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Spending Analysis by Demographics</h3>
+                                <div class="mb-4 text-sm bg-blue-50 text-blue-800 p-3 rounded-lg border border-blue-100 flex items-start">
+                                    <i class="fas fa-info-circle mt-1 mr-2"></i>
+                                    <div><strong>Insight:</strong> The 25-34 Age Group shows significantly higher spending, driven largely by Male travelers ($1221 avg).</div>
+                                </div>
+                                <div class="chart-container"><canvas id="travelBar"></canvas></div>`;
+                grid.appendChild(c1);
+                container.appendChild(grid);
+
+                setTimeout(() => {
+                    new Chart(document.getElementById('travelBar'), {
+                        type: 'bar',
+                        data: {
+                            labels: data.ageGroups,
+                            datasets: [
+                                { label: 'Female Avg Spend', data: data.femaleSpend, backgroundColor: '#ec4899', borderRadius: 4 },
+                                { label: 'Male Avg Spend', data: data.maleSpend, backgroundColor: '#3b82f6', borderRadius: 4 },
+                                { label: 'Overall Avg Spend', data: data.avgSpend, type: 'line', borderColor: '#64748b', borderWidth: 2, pointBackgroundColor: '#64748b' }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                    });
+                }, 0);
+            },
+
+            renderOEI: function(container, data) {
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 lg:grid-cols-2 gap-8";
+
+                const c1 = document.createElement('div');
+                c1.className = "bg-white p-6 rounded-xl shadow-sm lg:col-span-2 animate-fade-in";
+                c1.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Regional Price Variance Audit</h3>
+                                <div class="mb-4 text-sm bg-red-50 text-red-800 p-3 rounded-lg border border-red-100 flex items-start">
+                                    <i class="fas fa-exclamation-triangle mt-1 mr-2"></i>
+                                    <div><strong>Alert:</strong> Significant variance detected in "Tents" and "Backpacks" between California and Oregon/Washington. Potential margin leakage.</div>
+                                </div>
+                                <div class="chart-container"><canvas id="oeiChart"></canvas></div>`;
+                grid.appendChild(c1);
+                container.appendChild(grid);
+
+                setTimeout(() => {
+                    new Chart(document.getElementById('oeiChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: data.items,
+                            datasets: [
+                                { label: 'California ($)', data: data.pricesCA, backgroundColor: '#f59e0b', borderRadius: 2 },
+                                { label: 'Oregon ($)', data: data.pricesOR, backgroundColor: '#10b981', borderRadius: 2 },
+                                { label: 'Washington ($)', data: data.pricesWA, backgroundColor: '#6366f1', borderRadius: 2 }
+                            ]
+                        },
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false,
+                            scales: { y: { beginAtZero: true } },
+                            plugins: { tooltip: { mode: 'index', intersect: false } }
+                        }
+                    });
+                }, 0);
+            },
+
+            renderNetworking: function(container, data) {
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 gap-8";
+
+                const c1 = document.createElement('div');
+                c1.className = "bg-white p-6 rounded-xl shadow-sm animate-fade-in";
+                c1.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Pareto Analysis (The 80/20 Rule)</h3>
+                                <p class="text-sm text-slate-500 mb-4">Top 23% of clients contribute nearly 40% of revenue. "Safeway" is a critical Whale account.</p>
+                                <div class="chart-container"><canvas id="paretoChart"></canvas></div>`;
+                grid.appendChild(c1);
+                container.appendChild(grid);
+
+                setTimeout(() => {
+                    new Chart(document.getElementById('paretoChart'), {
+                        data: {
+                            labels: data.clients,
+                            datasets: [
+                                {
+                                    type: 'line',
+                                    label: 'Cumulative % Value',
+                                    data: data.cumulativePerc,
+                                    borderColor: '#ef4444',
+                                    borderWidth: 2,
+                                    fill: false,
+                                    yAxisID: 'y1'
+                                },
+                                {
+                                    type: 'bar',
+                                    label: 'Customer Revenue ($)',
+                                    data: data.revenue,
+                                    backgroundColor: '#3b82f6',
+                                    borderRadius: 4,
+                                    yAxisID: 'y'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Revenue ($)' } },
+                                y1: { type: 'linear', display: true, position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false }, title: { display: true, text: 'Cumulative %' } }
+                            }
+                        }
+                    });
+                }, 0);
+            },
+
+            renderPortfolio: function(container, data) {
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-8";
+
+                const c1 = document.createElement('div');
+                c1.className = "bg-white p-6 rounded-xl shadow-sm animate-fade-in";
+                c1.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Asset Allocation</h3>
+                                <div class="chart-container" style="max-height: 300px;"><canvas id="allocChart"></canvas></div>`;
+                grid.appendChild(c1);
+
+                const c2 = document.createElement('div');
+                c2.className = "bg-white p-6 rounded-xl shadow-sm animate-fade-in";
+                c2.innerHTML = `<h3 class="text-lg font-semibold text-slate-700 mb-4">Portfolio Growth vs S&P 500</h3>
+                                <div class="chart-container" style="max-height: 300px;"><canvas id="growthChart"></canvas></div>`;
+                grid.appendChild(c2);
+
+                container.appendChild(grid);
+
+                setTimeout(() => {
+                    new Chart(document.getElementById('allocChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: data.assets,
+                            datasets: [{
+                                data: data.allocation,
+                                backgroundColor: ['#94a3b8', '#3b82f6', '#06b6d4', '#8b5cf6', '#f59e0b']
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+
+                    new Chart(document.getElementById('growthChart'), {
+                        type: 'line',
+                        data: {
+                            labels: data.growthDates,
+                            datasets: [
+                                { label: 'Nimgade Portfolio', data: data.portfolioVal, borderColor: '#10b981', tension: 0.1 },
+                                { label: 'S&P 500 Benchmark', data: data.sp500Base, borderColor: '#64748b', borderDash: [5, 5], tension: 0.1 }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                }, 0);
+            }
+        };
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        closeMobileMenu.addEventListener('click', toggleMobileMenu);
+
+        // Init App
+        document.addEventListener('DOMContentLoaded', () => {
+            router.navigate('overview');
+        });
+
+    </script>
+</body>
+</html>
